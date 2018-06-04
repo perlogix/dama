@@ -12,24 +12,24 @@ These configurations are loaded by default if not overridden in `config.yml`.
 	uploadsize: 2000000000
 	envsize: 20
 	https:
-		listen: "0.0.0.0"
-		port: "8443"
-		debug: false
-		verifytls: false
+	  listen: "0.0.0.0"
+	  port: "8443"
+	  debug: false
+	  verifytls: false
 	db:
-		db: 0
-		maxretries: 20
+	  db: 0
+	  maxretries: 20
 	docker:
-		endpoint: "unix:///var/run/docker.sock"
-		cpushares: 512
-		memory: 1073741824
+	  endpoint: "unix:///var/run/docker.sock"
+	  cpushares: 512
+	  memory: 1073741824
 	gotty:
-		tls: false
+	  tls: false
 
 These configurations need to be set in your environment variables.
 
 	# Server admin username and password
-    DamaUser       # example: DamaUser="tim"
+	DamaUser       # example: DamaUser="tim"
     DamaPassword   # example: DamaPassword="9e9692478ca848a19feb8e24e5506ec89"
 
 	# Redis database password if applicable
@@ -37,29 +37,29 @@ These configurations need to be set in your environment variables.
 
 All configurations types
 
-	images: ["taskfit:minimal"]                  # required / string array
-	expire: "1300"                               # string
-	deployexpire: "86400"                        # string
-	uploadsize: 2000000000                       # int
-	envsize: 20                                  # int
+	images: ["taskfit:minimal"]                # required / string array
+	expire: "1300"                             # string
+	deployexpire: "86400"                      # string
+	uploadsize: 2000000000                     # int
+	envsize: 20                                # int
 	https:
-		listen: "0.0.0.0"                        # string
-		port: "8443"                             # string
-		pem: "/opt/dama.pem"                     # required / string
-		key: "/opt/dama.key"                     # required / string
-		debug: false                             # bool
-		verifytls: false                         # bool
+	  listen: "0.0.0.0"                        # string
+	  port: "8443"                             # string
+	  pem: "/opt/dama.pem"                     # required / string
+	  key: "/opt/dama.key"                     # required / string
+	  debug: false                             # bool
+	  verifytls: false                         # bool
 	db:
-		network: "unix"                          # required / string
-		address: "./tmp/redis.sock"              # required / string
-		db: 0                                    # int
-		maxretries: 20                           # int
+	  network: "unix"                          # required / string
+	  address: "./tmp/redis.sock"              # required / string
+	  db: 0                                    # int
+	  maxretries: 20                           # int
 	docker:
-		endpoint: "unix:///var/run/docker.sock"  # string
-		cpushares: 512                           # int
-		memory: 1073741824                       # int
+	  endpoint: "unix:///var/run/docker.sock"  # string
+	  cpushares: 512                           # int
+	  memory: 1073741824                       # int
 	gotty:
-		tls: false                               # bool
+	  tls: false                               # bool
 
 ## CLI Configuration
 These environment variables need to be exported in order to use dama-cli.
@@ -126,17 +126,17 @@ This a simple `dama.yml` to setup your environment and run a Flask API.
 
 		@app.route('/predict')
 		def predict():
-			sepal_length = request.args.get('sepal_length')
-			sepal_width = request.args.get('sepal_width')
-			petal_length = request.args.get('petal_length')
-			petal_width = request.args.get('petal_width')
-			features = [[sepal_length, sepal_width, petal_length, petal_width]]
-			label_index = MODEL.predict(features)
-			label = MODEL_LABELS[label_index[0]]
-			return jsonify(status='complete', label=label)
+		  sepal_length = request.args.get('sepal_length')
+		  sepal_width = request.args.get('sepal_width')
+		  petal_length = request.args.get('petal_length')
+		  petal_width = request.args.get('petal_width')
+		  features = [[sepal_length, sepal_width, petal_length, petal_width]]
+		  label_index = MODEL.predict(features)
+		  label = MODEL_LABELS[label_index[0]]
+		  return jsonify(status='complete', label=label)
 		
 		if __name__ == '__main__':
-			app.run(debug=False, host="0.0.0.0", threaded=True)
+		  app.run(debug=False, host="0.0.0.0", threaded=True)
 
 cURL API in sandbox or deploy
 
@@ -163,14 +163,14 @@ All YAML configuration option types.
 	image           # string       - define container image for environment
 	port            # string       - port to expose for web service
 	git:
-		url         # string       - git URL
-		branch      # string       - git branch
-		sha         # string       - git SHA
+	  url         # string       - git URL
+	  branch      # string       - git branch
+	  sha         # string       - git SHA
 	aws_s3:
-		file        # string       - file to push or pull
-		dir		    # string       - directory to push or pull
-		bucket_push # string       - push file or dir to S3
-		bucket_pull # string       - pull file or dir from S3
+	  file        # string       - file to push or pull
+	  dir         # string       - directory to push or pull
+	  bucket_push # string       - push file or dir to S3
+	  bucket_pull # string       - pull file or dir from S3
 
 ## To Do
 
