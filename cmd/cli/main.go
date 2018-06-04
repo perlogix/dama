@@ -21,8 +21,8 @@ import (
 	json "github.com/json-iterator/go"
 	"github.com/leekchan/timeutil"
 	"github.com/ryanuber/columnize"
+	"github.com/taskfitio/dama/data"
 	"github.com/taskfitio/gotty-client"
-	"github.com/taskfitio/taskf/data"
 	"golang.org/x/net/http2"
 	"gopkg.in/yaml.v2"
 )

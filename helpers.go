@@ -16,7 +16,7 @@ import (
 
 // genToken generates a UUID key for sandbox & deploy when a new account is created
 func genToken() string {
-	id, _ := uuid.NewV4()
+	id := uuid.NewV4()
 	token := strings.Split(id.String(), "-")
 	return token[4]
 }

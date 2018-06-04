@@ -12,7 +12,7 @@ import (
 	"text/template"
 
 	"github.com/gin-gonic/gin"
-	"github.com/taskfitio/taskf/data"
+	"github.com/taskfitio/dama/data"
 	"github.com/yhat/wsutil"
 )
 
