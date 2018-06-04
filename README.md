@@ -172,6 +172,10 @@ All YAML configuration option types.
 	  bucket_push   # string       - push file or dir to S3
 	  bucket_pull   # string       - pull file or dir from S3
 
+## Build
+
+    make build
+
 ## To Do
 
  - [ ] Tokenize environment variables in DB
