@@ -172,6 +172,12 @@ All YAML configuration option types.
 	  bucket_push   # string       - push file or dir to S3
 	  bucket_pull   # string       - pull file or dir from S3
 
+## Dockerfiles
+Add these lines to your Dockerfiles for your CLI to connect via websockets
+
+    RUN cd /usr/bin && curl -L https://github.com/yudai/gotty/releases/download/v1.0.1/gotty_linux_amd64.tar.gz | tar -xz
+    CMD ["/usr/bin/gotty", "--reconnect", "-w", "/bin/bash"]
+
 ## Build
 
     make build
