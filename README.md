@@ -100,43 +100,43 @@ This a simple `dama.yml` to setup your environment and run a Flask API.
 	image: "taskfit:minimal"
 	port: "5000"
 	pip: |
-		Flask==0.12.2
-		scikit-learn==0.19.1
-		numpy==1.14.2
-		scipy==1.0.0
+	  Flask==0.12.2
+	  scikit-learn==0.19.1
+	  numpy==1.14.2
+	  scipy==1.0.0
 	python: |
-		from flask import Flask, request, jsonify
-		from sklearn import datasets
-		from sklearn.model_selection import train_test_split
-		from sklearn.ensemble import RandomForestClassifier
-		from sklearn.externals import joblib
+	  from flask import Flask, request, jsonify
+	  from sklearn import datasets
+	  from sklearn.model_selection import train_test_split
+	  from sklearn.ensemble import RandomForestClassifier
+	  from sklearn.externals import joblib
 
-		X, y = datasets.load_iris(return_X_y=True)
-		X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-		model = RandomForestClassifier(random_state=101)
-		model.fit(X_train, y_train)
-		print("Score on the training set is: {:2}".format(model.score(X_train, y_train)))
-		print("Score on the test set is: {:.2}".format(model.score(X_test, y_test)))
-		model_filename = 'iris-rf-v1.0.pkl'
-		print("Saving model to {}...".format(model_filename))
-		joblib.dump(model, model_filename)
-		app = Flask(__name__)
-		MODEL = joblib.load('iris-rf-v1.0.pkl')
-		MODEL_LABELS = ['setosa', 'versicolor', 'virginica']
+	  X, y = datasets.load_iris(return_X_y=True)
+	  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+	  model = RandomForestClassifier(random_state=101)
+	  model.fit(X_train, y_train)
+	  print("Score on the training set is: {:2}".format(model.score(X_train, y_train)))
+	  print("Score on the test set is: {:.2}".format(model.score(X_test, y_test)))
+	  model_filename = 'iris-rf-v1.0.pkl'
+	  print("Saving model to {}...".format(model_filename))
+	  joblib.dump(model, model_filename)
+	  app = Flask(__name__)
+	  MODEL = joblib.load('iris-rf-v1.0.pkl')
+	  MODEL_LABELS = ['setosa', 'versicolor', 'virginica']
 
-		@app.route('/predict')
-		def predict():
-		  sepal_length = request.args.get('sepal_length')
-		  sepal_width = request.args.get('sepal_width')
-		  petal_length = request.args.get('petal_length')
-		  petal_width = request.args.get('petal_width')
-		  features = [[sepal_length, sepal_width, petal_length, petal_width]]
-		  label_index = MODEL.predict(features)
-		  label = MODEL_LABELS[label_index[0]]
-		  return jsonify(status='complete', label=label)
+	  @app.route('/predict')
+	    def predict():
+	      sepal_length = request.args.get('sepal_length')
+	      sepal_width = request.args.get('sepal_width')
+	      petal_length = request.args.get('petal_length')
+	      petal_width = request.args.get('petal_width')
+	      features = [[sepal_length, sepal_width, petal_length, petal_width]]
+	      label_index = MODEL.predict(features)
+	      label = MODEL_LABELS[label_index[0]]
+	      return jsonify(status='complete', label=label)
 		
-		if __name__ == '__main__':
-		  app.run(debug=False, host="0.0.0.0", threaded=True)
+	  if __name__ == '__main__':
+	    app.run(debug=False, host="0.0.0.0", threaded=True)
 
 cURL API in sandbox or deploy
 
@@ -163,14 +163,14 @@ All YAML configuration option types.
 	image           # string       - define container image for environment
 	port            # string       - port to expose for web service
 	git:
-	  url         # string       - git URL
-	  branch      # string       - git branch
-	  sha         # string       - git SHA
+	  url           # string       - git URL
+	  branch        # string       - git branch
+	  sha           # string       - git SHA
 	aws_s3:
-	  file        # string       - file to push or pull
-	  dir         # string       - directory to push or pull
-	  bucket_push # string       - push file or dir to S3
-	  bucket_pull # string       - pull file or dir from S3
+	  file          # string       - file to push or pull
+	  dir           # string       - directory to push or pull
+	  bucket_push   # string       - push file or dir to S3
+	  bucket_pull   # string       - pull file or dir from S3
 
 ## To Do
 
