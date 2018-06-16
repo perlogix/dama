@@ -13,7 +13,7 @@ imports:
   version: 1f512fc3f05332ba7117626cdfb4e07474e58e60
 - name: github.com/jtolds/gls
   version: 8ddce2a84170772b95dd5d576c48d517b22cac63
-- name: github.com/Sirupsen/logrus
+- name: github.com/sirupsen/logrus
   version: cd7d1bbe41066b6c1f19780f895901052150a575
 - name: github.com/smartystreets/assertions
   version: 40711f7748186bbf9c99977cd89f21ce1a229447

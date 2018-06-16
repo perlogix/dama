@@ -28,22 +28,22 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	var err error
 	// Load server configurations from config.go and config.yml
-	err = configor.Load(&Config, "config.yml")
+	err = configor.Load(&DamaConfig, "config.yml")
 	if err != nil {
 		panic(err)
 	}
 	// Setup docker client
-	client, err = docker.NewClient(Config.Docker.EndPoint)
+	client, err = docker.NewClient(DamaConfig.Docker.EndPoint)
 	if err != nil {
 		panic(err)
 	}
 	// Setup Redis DB client
 	db = redis.NewClient(&redis.Options{
-		Network:    Config.DB.Network,
-		Addr:       Config.DB.Address,
-		Password:   Config.DB.Password,
-		DB:         Config.DB.DB,
-		MaxRetries: Config.DB.MaxRetries,
+		Network:    DamaConfig.DB.Network,
+		Addr:       DamaConfig.DB.Address,
+		Password:   DamaConfig.DB.Password,
+		DB:         DamaConfig.DB.DB,
+		MaxRetries: DamaConfig.DB.MaxRetries,
 	})
 	_, err = db.Ping().Result()
 	if err != nil {
@@ -54,7 +54,7 @@ func main() {
 
 	go cleanContainers()
 
-	if !Config.HTTPS.Debug {
+	if !DamaConfig.HTTPS.Debug {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
@@ -73,14 +73,12 @@ func main() {
 	})
 	r.GET("/favicon.ico", gin.Recovery(), secureConfig)
 	r.Use(gin.Recovery(), ginzap.Ginzap(logger, time.RFC3339, false), secureConfig)
-	r.GET("/api/:name/", api)
-	r.GET("/api/:name", api)
-	r.POST("/api/:name/", api)
-	r.POST("/api/:name", api)
+	r.GET("/api/*name", api)
+	r.POST("/api/*name", api)
 	r.POST("/create-user", createUser)
 	r.GET("/expire", expire)
 	r.GET("/images", func(c *gin.Context) {
-		imgs := map[string][]string{"images": Config.Images}
+		imgs := map[string][]string{"images": DamaConfig.Images}
 		c.JSON(200, imgs)
 	})
 	r.GET("/update", func(c *gin.Context) {
@@ -99,19 +97,19 @@ func main() {
 	// Set http server timeouts and idle connections
 	http.DefaultTransport.(*http.Transport).MaxIdleConnsPerHost = 200
 	s := &http.Server{
-		Addr:           Config.HTTPS.Listen + ":" + Config.HTTPS.Port,
+		Addr:           DamaConfig.HTTPS.Listen + ":" + DamaConfig.HTTPS.Port,
 		Handler:        r,
 		ReadTimeout:    120 * time.Second,
 		WriteTimeout:   600 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
-	if _, err := os.Stat(Config.HTTPS.Pem); os.IsNotExist(err) {
+	if _, err := os.Stat(DamaConfig.HTTPS.Pem); os.IsNotExist(err) {
 		fmt.Println("https pem/cert doesn't not exist")
 	}
-	if _, err := os.Stat(Config.HTTPS.Pem); os.IsNotExist(err) {
+	if _, err := os.Stat(DamaConfig.HTTPS.Pem); os.IsNotExist(err) {
 		fmt.Println("https key doesn't not exist")
 	}
 
 	fmt.Println("dama is sponsored by TaskFit.io, built on " + version)
-	s.ListenAndServeTLS(Config.HTTPS.Pem, Config.HTTPS.Key)
+	s.ListenAndServeTLS(DamaConfig.HTTPS.Pem, DamaConfig.HTTPS.Key)
 }

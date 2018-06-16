@@ -2,16 +2,37 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/Azure/go-ansiterm"
+  packages = [
+    ".",
+    "winterm"
+  ]
+  revision = "d6e3b3328b783f23731bc4d058875b0371ff8109"
+
+[[projects]]
   name = "github.com/BurntSushi/toml"
   packages = ["."]
   revision = "b26d9c308763d68093482582cea63d69be07a0f0"
   version = "v0.3.0"
 
 [[projects]]
-  name = "github.com/Sirupsen/logrus"
+  name = "github.com/Microsoft/go-winio"
   packages = ["."]
-  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
-  version = "v1.0.5"
+  revision = "7da180ee92d8bd8bb8c37fc560e673e6557c392f"
+  version = "v0.4.7"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/Nvveen/Gotty"
+  packages = ["."]
+  revision = "cd527374f1e5bff4938207604a14f2e38a9cf512"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/containerd/continuity"
+  packages = ["pathdriver"]
+  revision = "246e49050efdf45e8f17fbbcf1547ee376f9939e"
 
 [[projects]]
   branch = "master"
@@ -20,29 +41,53 @@
   revision = "58854f77ee8d858ce751b0a9bcc5533fef7bfa9e"
 
 [[projects]]
-  name = "github.com/fsouza/go-dockerclient"
+  name = "github.com/docker/docker"
   packages = [
-    ".",
-    "external/github.com/Sirupsen/logrus",
-    "external/github.com/docker/docker/opts",
-    "external/github.com/docker/docker/pkg/archive",
-    "external/github.com/docker/docker/pkg/fileutils",
-    "external/github.com/docker/docker/pkg/homedir",
-    "external/github.com/docker/docker/pkg/idtools",
-    "external/github.com/docker/docker/pkg/ioutils",
-    "external/github.com/docker/docker/pkg/longpath",
-    "external/github.com/docker/docker/pkg/pools",
-    "external/github.com/docker/docker/pkg/promise",
-    "external/github.com/docker/docker/pkg/stdcopy",
-    "external/github.com/docker/docker/pkg/system",
-    "external/github.com/docker/go-units",
-    "external/github.com/hashicorp/go-cleanhttp",
-    "external/github.com/opencontainers/runc/libcontainer/user",
-    "external/golang.org/x/net/context",
-    "external/golang.org/x/sys/unix"
+    "api/types",
+    "api/types/blkiodev",
+    "api/types/container",
+    "api/types/filters",
+    "api/types/mount",
+    "api/types/network",
+    "api/types/registry",
+    "api/types/strslice",
+    "api/types/swarm",
+    "api/types/swarm/runtime",
+    "api/types/versions",
+    "opts",
+    "pkg/archive",
+    "pkg/fileutils",
+    "pkg/homedir",
+    "pkg/idtools",
+    "pkg/ioutils",
+    "pkg/jsonmessage",
+    "pkg/longpath",
+    "pkg/mount",
+    "pkg/pools",
+    "pkg/stdcopy",
+    "pkg/system",
+    "pkg/term",
+    "pkg/term/windows"
   ]
-  revision = "1d4f4ae73768d3ca16a6fb964694f58dc5eba601"
-  version = "docker-1.9/go-1.4"
+  revision = "a422774e593b33bd287d9890544ad9e09b380d8c"
+
+[[projects]]
+  name = "github.com/docker/go-connections"
+  packages = ["nat"]
+  revision = "3ede32e2033de7505e6500d6c868c2b9ed9f169d"
+  version = "v0.3.0"
+
+[[projects]]
+  name = "github.com/docker/go-units"
+  packages = ["."]
+  revision = "47565b4f722fb6ceae66b95f853feed578a4a51c"
+  version = "v0.3.3"
+
+[[projects]]
+  name = "github.com/fsouza/go-dockerclient"
+  packages = ["."]
+  revision = "ca33ff277b527ce11b793e62f9ba244129b01caf"
+  version = "v1.2.0"
 
 [[projects]]
   branch = "master"
@@ -88,6 +133,12 @@
   version = "v6.12.0"
 
 [[projects]]
+  name = "github.com/gogo/protobuf"
+  packages = ["proto"]
+  revision = "1adfc126b41513cc696b209667c8656ea7aac67c"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
@@ -103,7 +154,7 @@
   branch = "master"
   name = "github.com/jinzhu/configor"
   packages = ["."]
-  revision = "ec34f328956f53dfbd06e9f5306e37e6943443c3"
+  revision = "4edaf76fe18865e36de734d887f4c01bd05707af"
 
 [[projects]]
   name = "github.com/json-iterator/go"
@@ -136,6 +187,36 @@
   version = "1.0.0"
 
 [[projects]]
+  name = "github.com/opencontainers/go-digest"
+  packages = ["."]
+  revision = "279bed98673dd5bef374d3b6e4b09e2af76183bf"
+  version = "v1.0.0-rc1"
+
+[[projects]]
+  name = "github.com/opencontainers/image-spec"
+  packages = [
+    "specs-go",
+    "specs-go/v1"
+  ]
+  revision = "d60099175f88c47cd379c4738d158884749ed235"
+  version = "v1.0.1"
+
+[[projects]]
+  name = "github.com/opencontainers/runc"
+  packages = [
+    "libcontainer/system",
+    "libcontainer/user"
+  ]
+  revision = "baf6536d6259209c3edfa2b22237af82942d3dfa"
+  version = "v0.1.1"
+
+[[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   name = "github.com/ryanuber/columnize"
   packages = ["."]
   revision = "983d3a5fab1bf04d1b412465d2d9f8430e2e917e"
@@ -148,10 +229,16 @@
   version = "v1.2.0"
 
 [[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
+
+[[projects]]
   branch = "master"
   name = "github.com/taskfitio/gotty-client"
   packages = ["."]
-  revision = "d78369318caeb2a566642acf46fc1e59f9a719fc"
+  revision = "dd105cf1159f30c880f5b361d4bc81a133b1acc4"
 
 [[projects]]
   name = "github.com/ugorji/go"
@@ -194,7 +281,7 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "df8d4716b3472e4a531c33cedbe537dae921a1a9"
+  revision = "a8fb68e7206f8c78be19b432c58eb52a6aa34462"
 
 [[projects]]
   branch = "master"
@@ -207,7 +294,7 @@
     "http2/hpack",
     "idna"
   ]
-  revision = "1e491301e022f8f977054da4c2d852decd59571f"
+  revision = "db08ff08e8622530d9ed3a0e8ac279f6d4c02196"
 
 [[projects]]
   branch = "master"
@@ -216,7 +303,7 @@
     "unix",
     "windows"
   ]
-  revision = "c11f84a56e43e20a78cee75a7c034031ecf57d1f"
+  revision = "8014b7b116a67fea23fbb82cd834c9ad656ea44b"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -254,6 +341,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2786e072126ac1d11babc977460997c75830b657d47d5620599786b9dbc422c5"
+  inputs-digest = "76bb9009b77dee403b92bc9cba6292c1dec1bd8c1f2056b00b0ee9c5a6392817"
   solver-name = "gps-cdcl"
   solver-version = 1

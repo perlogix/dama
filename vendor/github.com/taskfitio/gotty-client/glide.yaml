@@ -1,6 +1,6 @@
 package: github.com/moul/gotty-client
 import:
-- package: github.com/Sirupsen/logrus
+- package: github.com/sirupsen/logrus
   version: cd7d1bbe41066b6c1f19780f895901052150a575
 - package: github.com/codegangsta/cli
   version: 2ae9042f5bcbaf15b01229f8395ba8e72e01bded

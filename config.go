@@ -32,7 +32,7 @@ type Gotty struct {
 }
 
 // Config variable with config.yml configurations
-var Config = struct {
+var DamaConfig = struct {
 	AdminUsername string   `env:"DamaUser" required:"true"`
 	AdminPassword string   `env:"DamaPassword" required:"true"`
 	Images        []string `required:"true"`

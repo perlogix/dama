@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/creack/goselect"
 	"github.com/gorilla/websocket"
 	json "github.com/json-iterator/go"

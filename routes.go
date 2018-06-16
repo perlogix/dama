@@ -26,12 +26,13 @@ type User struct {
 // api route is proxy requests to the right container based on name http param
 func api(c *gin.Context) {
 	name := c.Param("name")
+	key := strings.Split(name, "/")[1]
 	var api string
-	if dpAPI, _ := db.HGet("deployedPort", name).Result(); dpAPI != "" {
+	if dpAPI, _ := db.HGet("deployedPort", key).Result(); dpAPI != "" {
 		api = "localhost:" + dpAPI
 	}
 	if api == "" {
-		if sbAPI, _ := db.HGet("sandboxPort", name).Result(); sbAPI != "" {
+		if sbAPI, _ := db.HGet("sandboxPort", key).Result(); sbAPI != "" {
 			api = "localhost:" + sbAPI
 		}
 	}
@@ -42,7 +43,7 @@ func api(c *gin.Context) {
 	backendURL := &url.URL{Scheme: "http", Host: api}
 	p := httputil.NewSingleHostReverseProxy(backendURL)
 	var pathRewrite string
-	pathRewrite = strings.TrimPrefix(c.Request.URL.Path, "/api/"+name)
+	pathRewrite = strings.TrimPrefix(c.Request.URL.Path, "/api/"+key)
 	if pathRewrite == "" {
 		pathRewrite = "/"
 	}
@@ -80,7 +81,7 @@ func createUser(c *gin.Context) {
 		"key":      usr.Token,
 		"sandbox":  genToken(),
 		"deployed": genToken(),
-		"expire":   Config.Expire,
+		"expire":   DamaConfig.Expire,
 		"role":     usr.Role,
 	}
 	accounts := map[string]interface{}{
@@ -142,14 +143,14 @@ func ws(c *gin.Context) {
 		backend = "localhost:" + wsPort
 	}
 	var scheme string
-	if Config.Gotty.TLS {
+	if DamaConfig.Gotty.TLS {
 		scheme = "wss"
 	} else {
 		scheme = "ws"
 	}
 	backendURL := &url.URL{Scheme: scheme, Host: backend}
 	p := wsutil.NewSingleHostReverseProxy(backendURL)
-	p.TLSClientConfig = &tls.Config{InsecureSkipVerify: Config.HTTPS.VerifyTLS}
+	p.TLSClientConfig = &tls.Config{InsecureSkipVerify: DamaConfig.HTTPS.VerifyTLS}
 	p.ServeHTTP(c.Writer, c.Request)
 }
 
@@ -210,7 +211,7 @@ func uploads(c *gin.Context) {
 		c.String(500, err.Error())
 		return
 	}
-	if pathSize >= int64(Config.UploadSize) {
+	if pathSize >= int64(DamaConfig.UploadSize) {
 		c.String(500, "Workspace size limit reached")
 		return
 	}
@@ -270,7 +271,7 @@ func envs(c *gin.Context) {
 	}
 	envs, _ := db.HGetAll(name + "_env").Result()
 	totalMapLen := len(env.Env) + len(envs)
-	if totalMapLen < Config.EnvSize {
+	if totalMapLen < DamaConfig.EnvSize {
 		var envs = make(map[string]interface{})
 		for _, e := range env.Env {
 			split := strings.Split(e, "=")

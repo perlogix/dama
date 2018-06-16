@@ -23,7 +23,7 @@ func genToken() string {
 
 // checkImg checks to make sure docker image requested to run is on host
 func checkImg(a string) bool {
-	for _, b := range Config.Images {
+	for _, b := range DamaConfig.Images {
 		if b == a {
 			return true
 		}
@@ -35,8 +35,8 @@ func checkImg(a string) bool {
 func getAccounts() gin.Accounts {
 	accounts, _ := db.HGetAll("accounts").Result()
 	if len(accounts) == 0 {
-		if Config.AdminUsername != "" && Config.AdminPassword != "" {
-			accounts = map[string]string{Config.AdminUsername: Config.AdminPassword}
+		if DamaConfig.AdminUsername != "" && DamaConfig.AdminPassword != "" {
+			accounts = map[string]string{DamaConfig.AdminUsername: DamaConfig.AdminPassword}
 		}
 	}
 	return accounts
@@ -74,7 +74,7 @@ func createContainer(name, image, file, port string, deploy bool) (string, error
 	labels["dama"] = "dama"
 	labels["user"] = name
 	if image == "" {
-		img = Config.Images[0]
+		img = DamaConfig.Images[0]
 	} else {
 		img = image
 	}
@@ -85,7 +85,7 @@ func createContainer(name, image, file, port string, deploy bool) (string, error
 
 	if deploy {
 		cmd = []string{"/bin/bash", "/root/workspace/.dama"}
-		labels["expire"] = Config.DeployExpire
+		labels["expire"] = DamaConfig.DeployExpire
 		labels["API"] = "true"
 		env = append(env, "API=true")
 		deleteContainers(name, "API")
@@ -95,7 +95,7 @@ func createContainer(name, image, file, port string, deploy bool) (string, error
 		var expire string
 		expire, err = db.HGet(name, "expire").Result()
 		if err != nil {
-			expire = Config.Expire
+			expire = DamaConfig.Expire
 		}
 		labels["expire"] = expire
 		labels["build"] = "true"
@@ -114,7 +114,7 @@ func createContainer(name, image, file, port string, deploy bool) (string, error
 		portStr:    []docker.PortBinding{docker.PortBinding{HostIP: "0.0.0.0"}},
 	}
 	hostConfig := &docker.HostConfig{PublishAllPorts: false, PortBindings: portBindings, Privileged: false, Binds: binds}
-	opts := docker.CreateContainerOptions{Config: &docker.Config{CPUShares: Config.Docker.CPUShares, Memory: Config.Docker.Memory, Cmd: cmd, Hostname: hostname, Image: img, Labels: labels, Env: env, ExposedPorts: map[docker.Port]struct{}{portStr: {}, "8080/tcp": {}}}, HostConfig: hostConfig}
+	opts := docker.CreateContainerOptions{Config: &docker.Config{CPUShares: DamaConfig.Docker.CPUShares, Memory: DamaConfig.Docker.Memory, Cmd: cmd, Hostname: hostname, Image: img, Labels: labels, Env: env, ExposedPorts: map[docker.Port]struct{}{portStr: {}, "8080/tcp": {}}}, HostConfig: hostConfig}
 	ctr, err := client.CreateContainer(opts)
 	if err != nil {
 		return "", err
@@ -200,7 +200,7 @@ func detectImg() {
 	for _, img := range dkrList {
 		dkrImgs = append(dkrImgs, img.RepoTags[0])
 	}
-	for _, img := range Config.Images {
+	for _, img := range DamaConfig.Images {
 		if !stringInSlice(img, dkrImgs) {
 			panic(img + " Image not found")
 		}
