@@ -20,3 +20,4 @@ source
 *tar.gz
 *zip
 *.box
+!.circleci/config.yml

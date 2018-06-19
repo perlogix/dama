@@ -10,7 +10,6 @@ jobs:
       - run:
           shell: /bin/bash
           command: |
-            cd dama
             make server
             make certs
             make config
