@@ -105,11 +105,16 @@ func main() {
 	}
 	if _, err := os.Stat(DamaConfig.HTTPS.Pem); os.IsNotExist(err) {
 		fmt.Println("https pem/cert doesn't not exist")
+		os.Exit(1)
 	}
-	if _, err := os.Stat(DamaConfig.HTTPS.Pem); os.IsNotExist(err) {
+	if _, err := os.Stat(DamaConfig.HTTPS.Key); os.IsNotExist(err) {
 		fmt.Println("https key doesn't not exist")
+		os.Exit(1)
 	}
 
 	fmt.Println("dama is sponsored by TaskFit.io, built on " + version)
-	s.ListenAndServeTLS(DamaConfig.HTTPS.Pem, DamaConfig.HTTPS.Key)
+	err = s.ListenAndServeTLS(DamaConfig.HTTPS.Pem, DamaConfig.HTTPS.Key)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

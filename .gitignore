@@ -15,3 +15,8 @@ upload
 tmp
 config.yml
 source
+*.log
+.vagrant*
+*tar.gz
+*zip
+*.box

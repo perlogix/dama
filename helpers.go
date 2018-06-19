@@ -106,7 +106,8 @@ func createContainer(name, image, file, port string, deploy bool) (string, error
 			cmd = getCmd(img)
 		}
 	}
-	binds = []string{pwd + "/upload/" + name + ":/root/workspace:rw"}
+	uploadPath := filepath.Clean(pwd + "/upload/" + name)
+	binds = []string{uploadPath + ":/root/workspace:rw"}
 	var portBindings = map[docker.Port][]docker.PortBinding{}
 	portStr := docker.Port(port + "/tcp")
 	portBindings = map[docker.Port][]docker.PortBinding{
@@ -198,7 +199,9 @@ func detectImg() {
 	}
 	var dkrImgs []string
 	for _, img := range dkrList {
-		dkrImgs = append(dkrImgs, img.RepoTags[0])
+		if len(img.RepoTags) != 0 {
+			dkrImgs = append(dkrImgs, img.RepoTags[0])
+		}
 	}
 	for _, img := range DamaConfig.Images {
 		if !stringInSlice(img, dkrImgs) {
