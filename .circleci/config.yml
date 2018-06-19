@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.10.3
+    working_directory: /go/src/github.com/taskfitio/dama
+    steps:
+      - setup_remote_docker
+      - run: git clone https://github.com/taskfitio/dama.git -b $CIRCLE_BRANCH .
+      - run:
+          shell: /bin/bash
+          command: |
+            cd dama
+            make server
+            make certs
+            make config
+            make docker
+      - run:
+          shell: /bin/bash
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push taskfitio/dama:latest
