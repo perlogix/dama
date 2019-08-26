@@ -1,9 +1,9 @@
 # dama
 A simplified machine learning container platform that helps teams get started with an automated workflow.
 
-![demo gif](https://taskfit.io/dama-demo.gif)
+![demo gif](https://yeticloud.com/dama-demo.gif)
 
-[Larger Demo Video](https://taskfit.io/dama-demo-2.gif)
+[Larger Demo Video](https://yeticloud.com/dama-demo-2.gif)
 
 ### DISCLAIMER: dama is currently in alpha due to the lack of security and scaling, but still fun to try out!
 
