@@ -12,7 +12,7 @@ import (
 
 	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-contrib/secure"
-	"github.com/gin-contrib/zap"
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -112,7 +112,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("dama is sponsored by TaskFit.io, built on " + version)
+	fmt.Println("dama is sponsored by Perlogix, built on " + version)
 	err = s.ListenAndServeTLS(DamaConfig.HTTPS.Pem, DamaConfig.HTTPS.Key)
 	if err != nil {
 		fmt.Println(err)

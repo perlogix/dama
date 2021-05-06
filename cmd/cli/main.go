@@ -20,9 +20,9 @@ import (
 
 	json "github.com/json-iterator/go"
 	"github.com/leekchan/timeutil"
+	"github.com/perlogix/dama/data"
+	gottyclient "github.com/perlogix/data/gotty-client"
 	"github.com/ryanuber/columnize"
-	"github.com/taskfitio/dama/data"
-	"github.com/taskfitio/gotty-client"
 	"golang.org/x/net/http2"
 	"gopkg.in/yaml.v2"
 )

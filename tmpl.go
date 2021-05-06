@@ -2,8 +2,8 @@ package main
 
 // tmpl is a text/template to create a bash script in /root/workspace/.dama
 var tmpl = `#!/bin/bash
-if [[ ! -f /root/.taskfit ]]; then
-touch /root/.taskfit
+if [[ ! -f /root/.dama ]]; then
+touch /root/.dama
 {{if .SetupCmd}}
 {{ .SetupCmd }}
 {{- end}}

@@ -11,7 +11,7 @@ net.core.somaxconn=65536
 net.ipv4.tcp_max_syn_backlog=8192
 EOF
 
-cat <<EOF> /etc/security/limits.d/taskfit.conf
+cat <<EOF> /etc/security/limits.d/perlogix.conf
 * hard nofile 999999
 * soft nofile 999999
 EOF
@@ -26,10 +26,10 @@ EOF
 curl -sSL https://get.docker.com/ |  sh
 systemctl enable docker
 
-docker run --name dama-redis -d -v /tmp:/tmp:rw taskfitio/dama-redis:latest
-docker pull taskfitio/minimal:latest
+docker run --name dama-redis -d -v /tmp:/tmp:rw perlogix/dama-redis:latest
+docker pull perlogix/minimal:latest
 mkdir -p /upload
-docker run --name dama-server --net=host -d -v /tmp:/tmp:rw -v /upload:/upload -v /var/run/docker.sock:/var/run/docker.sock taskfitio/dama:latest
+docker run --name dama-server --net=host -d -v /tmp:/tmp:rw -v /upload:/upload -v /var/run/docker.sock:/var/run/docker.sock perlogix/dama:latest
 SCRIPT
 
 Vagrant.configure(2) do |config|

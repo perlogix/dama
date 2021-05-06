@@ -39,7 +39,7 @@ These configurations need to be set in your environment variables.
 
 All configurations types
 
-	images: ["taskfit:minimal"]                # required / string array
+	images: ["perlogix:minimal"]                # required / string array
 	expire: "1300"                             # string
 	deployexpire: "86400"                      # string
 	uploadsize: 2000000000                     # int
@@ -99,7 +99,7 @@ These environment variables need to be exported in order to use dama-cli.
 ## dama.yml File
 This a simple `dama.yml` to setup your environment and run a Flask API.
 
-	image: "taskfit:minimal"
+	image: "perlogix:minimal"
 	port: "5000"
 	pip: |
 	  Flask==0.12.2
@@ -146,7 +146,7 @@ cURL API in sandbox or deploy
 
 Even simpler environment setup with model training.
 
-	image: "taskfit:tensorflow"
+	image: "perlogix:tensorflow"
 	checkout: "https://github.com/aymericdamien/TensorFlow-Examples.git"
 	cmd: |
 	  cd TensorFlow-Examples/examples/3_NeuralNetworks

@@ -3,10 +3,10 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.10.3
-    working_directory: /go/src/github.com/taskfitio/dama
+    working_directory: /go/src/github.com/perlogix/dama
     steps:
       - setup_remote_docker
-      - run: git clone https://github.com/taskfitio/dama.git -b $CIRCLE_BRANCH .
+      - run: git clone https://github.com/perlogix/dama.git -b $CIRCLE_BRANCH .
       - run:
           shell: /bin/bash
           command: |
@@ -18,4 +18,4 @@ jobs:
           shell: /bin/bash
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push taskfitio/dama:latest
+            docker push perlogix/dama:latest

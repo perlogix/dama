@@ -4,7 +4,7 @@ VERSION:=$(shell date "+%Y%m%d")
 LDFLAGS:='-X "main.version=$(VERSION)"'
 
 define config
-images: ["taskfitio/minimal:latest"]
+images: ["perlogix/minimal:latest"]
 expire: "1300"
 deployexpire: "86400"
 uploadsize: 2000000000
@@ -58,4 +58,4 @@ config:
 	@echo "$$config" > config.yml
 
 docker:
-	docker build -t taskfitio/dama:latest .
+	docker build -t perlogix/dama:latest .
