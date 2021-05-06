@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"bytes"
@@ -21,7 +21,7 @@ import (
 	json "github.com/json-iterator/go"
 	"github.com/leekchan/timeutil"
 	"github.com/perlogix/dama/data"
-	gottyclient "github.com/perlogix/data/gotty-client"
+	gottyclient "github.com/perlogix/dama/gotty-client"
 	"github.com/ryanuber/columnize"
 	"golang.org/x/net/http2"
 	"gopkg.in/yaml.v2"
