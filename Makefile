@@ -1,7 +1,8 @@
 CLI_NAME:='dama'
 SERVER_NAME:='dama-proxy'
 VERSION:=$(shell date "+%Y%m%d")
-LDFLAGS:='-X "main.version=$(VERSION)"'
+PACKAGES:=$(shell go list ./... | grep -v /vendor/)
+LDFLAGS:='-s -w -X "main.version=$(VERSION)"'
 
 define config
 images: ["perlogix/minimal:latest"]
@@ -50,6 +51,18 @@ buildall:
 	GOOS=linux go build -ldflags $(LDFLAGS) -o $(CLI_NAME) ./cmd/cli
 	GOOS=darwin go build -ldflags $(LDFLAGS) -o $(CLI_NAME)-darwin ./cmd/cli
 	GOOS=windows go build -ldflags $(LDFLAGS) -o $(CLI_NAME)-windows ./cmd/cli
+
+gofmt:
+	go fmt ./...
+
+lint: gofmt
+	$(GOPATH)/bin/golint $(PACKAGES)
+	$(GOPATH)/bin/golangci-lint run
+	$(GOPATH)/bin/gosec -quiet -no-fail ./...
+
+update-deps:
+	go get -u ./...
+	go mod tidy
 
 certs:
 	openssl req -subj '/CN=dama/O=dama/C=US' -new -newkey rsa:2048 -sha256 -days 365 -nodes -x509 -keyout dama.key -out dama.pem

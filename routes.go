@@ -167,12 +167,24 @@ func deploy(c *gin.Context) {
 		return
 	}
 	path := pwd + "/upload/" + name
-	os.MkdirAll(path, 0755)
+	err := os.MkdirAll(path, 0755)
+	if err != nil {
+		c.String(500, err.Error())
+		return
+	}
 	t := template.New("tmpl")
 	t, _ = t.Parse(tmpl)
 	f, _ := os.Create(path + "/.dama")
-	os.Chmod(path+"/.dama", 0755)
-	t.Execute(f, df)
+	err = os.Chmod(path+"/.dama", 0755)
+	if err != nil {
+		c.String(500, err.Error())
+		return
+	}
+	err = t.Execute(f, df)
+	if err != nil {
+		c.String(500, err.Error())
+		return
+	}
 	f.Close()
 	if df.Env != nil {
 		var envs = make(map[string]interface{})
@@ -191,7 +203,7 @@ func deploy(c *gin.Context) {
 		port = df.Port
 	}
 	var ctr string
-	ctr, err := createContainer(name, image, file, port, true)
+	ctr, err = createContainer(name, image, file, port, true)
 	if err != nil {
 		c.String(500, err.Error())
 		return
@@ -204,7 +216,11 @@ func deploy(c *gin.Context) {
 // uploads route is for uploading files to the users workspace directory
 func uploads(c *gin.Context) {
 	name := c.MustGet(gin.AuthUserKey).(string)
-	c.Request.ParseMultipartForm(32 << 20)
+	err := c.Request.ParseMultipartForm(32 << 20)
+	if err != nil {
+		c.String(500, err.Error())
+		return
+	}
 	path := pwd + "/upload/" + name
 	pathSize, err := dirSize(path)
 	if err != nil {
@@ -230,7 +246,11 @@ func uploads(c *gin.Context) {
 		return
 	}
 	defer out.Close()
-	io.Copy(out, info)
+	_, err = io.Copy(out, info)
+	if err != nil {
+		c.String(500, err.Error())
+		return
+	}
 	c.String(201, "Uploaded")
 }
 
@@ -264,7 +284,10 @@ func envs(c *gin.Context) {
 		return
 	}
 	for _, e := range env.Env {
-		if match, _ := regexp.MatchString("\\w*=\\w*", e); !match {
+		if match, err := regexp.MatchString("\\w*=\\w*", e); !match {
+			if err != nil {
+				c.String(500, err.Error())
+			}
 			c.String(500, "Environment setting needs to be key=value")
 			return
 		}
@@ -297,13 +320,28 @@ func create(c *gin.Context) {
 		return
 	}
 	path := pwd + "/upload/" + name
-	os.MkdirAll(path, 0755)
+	err := os.MkdirAll(path, 0755)
+	if err != nil {
+		c.String(500, err.Error())
+		return
+	}
 	t := template.New("tmpl")
 	t, _ = t.Parse(tmpl)
 	f, _ := os.Create(path + "/.dama")
-	os.Chmod(path+"/.dama", 0755)
-	t.Execute(f, df)
-	f.Close()
+	err = os.Chmod(path+"/.dama", 0755)
+	if err != nil {
+		c.String(500, err.Error())
+		return
+	}
+	err = t.Execute(f, df)
+	if err != nil {
+		c.String(500, err.Error())
+		return
+	}
+	err = f.Close()
+	if err != nil {
+		c.String(500, err.Error())
+	}
 
 	if df.Env != nil {
 		var envs = make(map[string]interface{})

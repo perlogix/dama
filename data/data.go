@@ -2,8 +2,8 @@ package data
 
 // This package is shared between server and CLI
 
-// AWS_S3 configuration for AWS_S3 primary key
-type AWS_S3 struct {
+// AWSs3 configuration for AWSs3 primary key
+type AWSs3 struct {
 	File       string `yaml:"file" json:"file"`
 	Dir        string `yaml:"dir" json:"dir"`
 	BucketPush string `yaml:"bucket_push" json:"bucket_push"`
@@ -30,5 +30,5 @@ type Damafile struct {
 	Image      string   `yaml:"image" json:"image"`
 	Port       string   `yaml:"port" json:"port"`
 	Git        Git
-	AWS_S3     AWS_S3
+	AWSs3      AWSs3
 }

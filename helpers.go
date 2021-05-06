@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 
 	docker "github.com/fsouza/go-dockerclient"
 )
@@ -136,13 +136,19 @@ func createContainer(name, image, file, port string, deploy bool) (string, error
 
 // deleteContainers is used to delete container if new flag or run is specified
 func deleteContainers(user, label string) {
-	ctrs, _ := client.ListContainers(docker.ListContainersOptions{All: true, Filters: map[string][]string{"label": {"dama"}}})
+	ctrs, err := client.ListContainers(docker.ListContainersOptions{All: true, Filters: map[string][]string{"label": {"dama"}}})
+	if err != nil {
+		return
+	}
 	for _, ctr := range ctrs {
 		for k, v := range ctr.Labels {
 			if k == "user" && v == user {
 				for k := range ctr.Labels {
 					if k == label {
-						client.RemoveContainer(docker.RemoveContainerOptions{ID: ctr.ID, Force: true})
+						err := client.RemoveContainer(docker.RemoveContainerOptions{ID: ctr.ID, Force: true})
+						if err != nil {
+							return
+						}
 					}
 				}
 			}
@@ -159,7 +165,7 @@ func cleanContainers() {
 				if k == "expire" {
 					created, err := client.InspectContainer(ctr.ID)
 					if err == nil {
-						delta := time.Now().Sub(created.Created)
+						delta := time.Since(created.Created)
 						expireInt, _ := strconv.Atoi(v)
 						if int(delta.Seconds()) > expireInt {
 							for k := range ctr.Labels {
@@ -167,13 +173,19 @@ func cleanContainers() {
 									db.HDel("wsPort", ctr.Labels["user"])
 								}
 							}
-							client.RemoveContainer(docker.RemoveContainerOptions{ID: ctr.ID, Force: true})
+							err := client.RemoveContainer(docker.RemoveContainerOptions{ID: ctr.ID, Force: true})
+							if err != nil {
+								return
+							}
 						}
 					}
 				}
 				status := path.Base(strings.Split(ctr.Status, " ")[0])
 				if status == "Exited" {
-					client.RemoveContainer(docker.RemoveContainerOptions{ID: ctr.ID, Force: true})
+					err := client.RemoveContainer(docker.RemoveContainerOptions{ID: ctr.ID, Force: true})
+					if err != nil {
+						return
+					}
 				}
 			}
 		}

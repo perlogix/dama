@@ -31,7 +31,7 @@ type Gotty struct {
 	TLS bool `default:"false"`
 }
 
-// Config variable with config.yml configurations
+// DamaConfig variable with config.yml configurations
 var DamaConfig = struct {
 	AdminUsername string   `env:"DamaUser" required:"true"`
 	AdminPassword string   `env:"DamaPassword" required:"true"`

@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.10.3
+      - image: circleci/golang:1.16
     working_directory: /go/src/github.com/perlogix/dama
     steps:
       - setup_remote_docker
@@ -14,8 +14,3 @@ jobs:
             make certs
             make config
             make docker
-      - run:
-          shell: /bin/bash
-          command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push perlogix/dama:latest

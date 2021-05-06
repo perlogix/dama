@@ -20,8 +20,8 @@ git clone {{.Git.URL}} -b {{.Git.Branch}}
 git clone {{.Git.URL}}
 {{- end}}
 {{- end}}
-{{if .AWS_S3.BucketPull}}
-aws s3 sync {{.AWS_S3.BucketPull}} .
+{{if .AWSs3.BucketPull}}
+aws s3 sync {{.AWSs3.BucketPull}} .
 {{- end}}
 {{ .Cmd }}
 {{if .Python}}
@@ -29,11 +29,11 @@ python << EOF
 {{ .Python }}
 EOF
 {{- end}}
-{{if and .AWS_S3.File .AWS_S3.BucketPush}}
-aws s3 cp {{.AWS_S3.File}} {{.AWS_S3.BucketPush}}
+{{if and .AWSs3.File .AWSs3.BucketPush}}
+aws s3 cp {{.AWSs3.File}} {{.AWSs3.BucketPush}}
 {{- end}}
-{{if and .AWS_S3.Dir .AWS_S3.BucketPush}}
-aws s3 sync {{.AWS_S3.Dir}} {{.AWS_S3.BucketPush}}
+{{if and .AWSs3.Dir .AWSs3.BucketPush}}
+aws s3 sync {{.AWSs3.Dir}} {{.AWSs3.BucketPush}}
 {{- end}}
 fi
 bash`

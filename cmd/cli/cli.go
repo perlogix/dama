@@ -1,4 +1,4 @@
-package cmd
+package main
 
 import (
 	"bytes"
@@ -30,8 +30,6 @@ import (
 var (
 	username string
 	key      string
-	version  string
-	img      string
 	server   string
 	c        *http.Client
 	strf     = "%Y%m%d%I%M%S"
@@ -65,7 +63,10 @@ func gitRev() string {
 func postEnv(e string) (string, error) {
 	env := data.Damafile{Env: strings.Split(e, ",")}
 	b := new(bytes.Buffer)
-	json.NewEncoder(b).Encode(env)
+	err := json.NewEncoder(b).Encode(env)
+	if err != nil {
+		return "", err
+	}
 	req, err := http.NewRequest("POST", server+"envs", b)
 	if err != nil {
 		return "", err
@@ -87,7 +88,10 @@ func postEnv(e string) (string, error) {
 // postCreate is used to create new container to connect with websocket
 func postCreate(t data.Damafile) (string, error) {
 	b := new(bytes.Buffer)
-	json.NewEncoder(b).Encode(t)
+	err := json.NewEncoder(b).Encode(t)
+	if err != nil {
+		return "", err
+	}
 	req, err := http.NewRequest("POST", server+"create", b)
 	if err != nil {
 		return "", err
@@ -187,7 +191,10 @@ func downloadFile(filepath string) error {
 // deployAPI is used to create a new deployed container
 func deployAPI(t data.Damafile) (string, error) {
 	b := new(bytes.Buffer)
-	json.NewEncoder(b).Encode(t)
+	err := json.NewEncoder(b).Encode(t)
+	if err != nil {
+		return "", err
+	}
 	req, err := http.NewRequest("POST", server+"deploy", b)
 	if err != nil {
 		return "", err
@@ -276,8 +283,7 @@ func apiDetails(name string) string {
 			deployHealth = "offline"
 		}
 	}
-	var output []string
-	output = []string{"URL | HEALTH | TYPE", sandboxURL + "|" + sandboxHealth + "|" + "sandbox", deployURL + "|" + deployHealth + "|" + "deployed"}
+	var output = []string{"URL | HEALTH | TYPE", sandboxURL + "|" + sandboxHealth + "|" + "sandbox", deployURL + "|" + deployHealth + "|" + "deployed"}
 	return columnize.SimpleFormat(output)
 }
 
@@ -297,7 +303,10 @@ func imgDetails() string {
 		if err != nil {
 			return "Error retrieving images details"
 		}
-		json.Unmarshal(body, &imgs)
+		err = json.Unmarshal(body, &imgs)
+		if err != nil {
+			return err.Error()
+		}
 	} else {
 		return "Error retrieving images details"
 	}
@@ -344,7 +353,11 @@ func main() {
 		TLSHandshakeTimeout: time.Second * 30,
 	}
 
-	http2.ConfigureTransport(tr)
+	err := http2.ConfigureTransport(tr)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(0)
+	}
 
 	c = &http.Client{
 		Transport: tr,
@@ -449,7 +462,11 @@ func main() {
 			fmt.Println(tryAPI(server + "api/" + uri))
 			os.Exit(0)
 		}
-		postCreate(f)
+		_, err := postCreate(f)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 		if err := cli.Loop(*run, true, "build", *img, username, key, port); err != nil {
 			fmt.Println("Environment no longer available, try\ndama -new")
 			os.Exit(1)
