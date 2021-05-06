@@ -12,10 +12,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/creack/goselect"
 	"github.com/gorilla/websocket"
 	json "github.com/json-iterator/go"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
@@ -52,6 +52,7 @@ func GetWebsocketURL(httpURL string) (*url.URL, *http.Header, error) {
 	return target, &header, nil
 }
 
+// Client type
 type Client struct {
 	Dialer          *websocket.Dialer
 	Conn            *websocket.Conn
@@ -220,7 +221,7 @@ func die(fname string, poison chan bool) posionReason {
 
 	wasOpen := <-poison
 	if wasOpen {
-		logrus.Error("ERROR: The channel was open when it wasn't suppoed to be")
+		logrus.Error("ERROR: The channel was open when it wasn't supposed to be")
 	}
 
 	return killed
@@ -347,7 +348,7 @@ func (c *Client) readLoop(wg *sync.WaitGroup) posionReason {
 			}
 			if len(msg.Data) == 0 {
 
-				logrus.Warnf("An error has occured")
+				logrus.Warnf("An error has occurred")
 				return openPoison(fname, c.poison)
 			}
 			switch msg.Data[0] {

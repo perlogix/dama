@@ -11,3 +11,6 @@ jobs:
           shell: /bin/bash
           command: |
             make buildall
+            make certs
+            make config
+            make docker

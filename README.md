@@ -1,4 +1,9 @@
 # dama
+
+[![CircleCI](https://circleci.com/gh/perlogix/dama.svg?style=svg)](https://circleci.com/gh/perlogix/dama)
+[![Go Report Card](https://goreportcard.com/badge/github.com/perlogix/dama)](https://goreportcard.com/report/github.com/perlogix/dama)
+
+
 A simplified machine learning container platform that helps teams get started with an automated workflow.
 
 ![demo gif](https://s3.amazonaws.com/yeticloud.com/dama-demo.gif)
