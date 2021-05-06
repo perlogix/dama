@@ -10,7 +10,4 @@ jobs:
       - run:
           shell: /bin/bash
           command: |
-            make server
-            make certs
-            make config
-            make docker
+            make buildall
