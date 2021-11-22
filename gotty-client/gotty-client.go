@@ -233,17 +233,8 @@ func (c *Client) termsizeLoop(wg *sync.WaitGroup) posionReason {
 	fname := "termsizeLoop"
 
 	ch := make(chan os.Signal, 1)
-	notifySignalSIGWINCH(ch)
-	defer resetSignalSIGWINCH()
 
 	for {
-		if b, err := syscallTIOCGWINSZ(); err != nil {
-			logrus.Warn(err)
-		} else {
-			if err = c.write(append([]byte("2"), b...)); err != nil {
-				logrus.Warnf("ws.WriteMessage failed: %v", err)
-			}
-		}
 		select {
 		case <-c.poison:
 			/* Somebody poisoned the well; die */
